@@ -49,13 +49,20 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     console.log("hashepasswooo",hashedPassword);
     let user = req.body;
     user.password = hashedPassword
-    const userId = await UserModel.createUser(user);
-    if (userId == 0) {
-        res.status(500).json({ error: 'Error creating user' });
-       
-    } else {
-        res.status(201).json({ message: 'User created successfully', id: userId });
-    }    
+    try {
+        const userId = await UserModel.createUser(user);
+        if (userId == 0) {
+            res.status(500).json({ error: 'Error creating user' });
+        
+        } else {
+            res.status(201).json({ message: 'User created successfully', id: userId });
+        }
+    } catch (err :any) {
+        console.log("Inside err", err)
+        if (err.errno === 1062) {
+            res.status(400).send({"error" : "Email already exist"})
+        }
+    }        
     
 };
 export const getUsers =  async (req: Request, res: Response): Promise<void> => {

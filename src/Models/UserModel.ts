@@ -16,8 +16,8 @@ export  function createUser (user:User): Promise<number> {
     return new Promise((resolve, reject) => {
         db.query('INSERT INTO users (username, email, address, password, profile_pic) VALUES (?, ?, ?, ?, ?)', [username, email, address, password, profile_pic], (err, result) => {
             if (err) {
-                //console.log("Error>>>>>",err);
-                reject(0);
+                console.log("Error>>>>>",err.errno);
+                reject(err);
             } else {
                 resolve(result.insertId) ;
             }    
