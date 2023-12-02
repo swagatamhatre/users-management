@@ -13,7 +13,7 @@ const router = express.Router();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -26,7 +26,7 @@ const router = express.Router();
  *                 type: string
  *                 format: password
  *               profile_pic: 
- *                 type: string
+ *                 type: file
  *               address:
  *                 type: string
  *             required:
@@ -88,8 +88,32 @@ router.get('/user/:id', authenticateToken, UserController.getUserById);
  * @openapi
  * /user/{$id}:
  *   put:
- *     summary: Update user
- *     description: update existing user based on id
+*     summary: Create a new user
+ *     description: Create a new user with provided details
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *               profile_pic: 
+ *                 type: file
+ *               address:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - address
  *     responses:
  *       '200':
  *         description: Successful response updating user
@@ -104,6 +128,21 @@ router.put('/user/:id', authenticateToken, upload.single('profile_pic'), UserCon
  *   delete:
  *     summary: Delete user
  *     description: Delete user by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         description: Numeric id of user to retrieve
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         schema: 
+ *           type: string
+ *           description: JWT token      
+
  *     responses:
  *       '204':
  *         description: Successful response deleting users
