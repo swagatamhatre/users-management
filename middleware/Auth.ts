@@ -5,7 +5,6 @@ dotenv.config();
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.header('Authorization')
-
     if (!token) {
         res.status(401).json({ message: 'Unauthorized: No token provided' });
         return;
@@ -13,7 +12,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     console.log("Token ==>", token);
     try {
         let encodedToken = token.split(" ")[1];
-        console.log("Secret key", process.env.SECRET_KEY)
+       // console.log("Secret key", process.env.SECRET_KEY)
         const decoded = jwt.verify(encodedToken, process.env.SECRET_KEY)
 
         next();

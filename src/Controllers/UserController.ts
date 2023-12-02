@@ -52,7 +52,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     try {
         const userId = await UserModel.createUser(user);
         if (userId == 0) {
-            res.status(500).json({ error: 'Error creating user' });
+            res.status(500).json({ error: 'Error in creating user' });
         
         } else {
             res.status(201).json({ message: 'User created successfully', id: userId });
@@ -60,7 +60,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     } catch (err :any) {
         console.log("Inside err", err)
         if (err.errno === 1062) {
-            res.status(400).send({"error" : "Email already exist"})
+            res.status(409).send({"error" : "Email already exist"})
         }
     }        
     

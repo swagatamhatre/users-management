@@ -1,19 +1,25 @@
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
-
-import swaggerJSDoc from 'swagger-jsdoc';
-
-const swaggerOptions = {
+const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Your API Documentation',
+      title: 'User Management API',
       version: '1.0.0',
-      description: 'Documentation for your API built with Swagger',
+      description: 'API Documentation for your application',
     },
+    servers: [
+      {
+        url: 'http://localhost:3000', 
+      },
+    ],
   },
-  apis: ['./src/controllers/*.ts'], // Path to your controller files or endpoints
+  apis: ['./src/Routes/*.ts'], // Path to your API routes folder or specific route files
 };
 
-const swaggerSpec = swaggerJSDoc(swaggerOptions);
+const specs = swaggerJsdoc(options);
 
-export default swaggerSpec;
+export const setupSwagger = (app: any) => {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+};
