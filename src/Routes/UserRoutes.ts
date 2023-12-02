@@ -1,7 +1,7 @@
 import express from 'express';
 import * as UserController from '../Controllers/UserController';
 import { authenticateToken } from'../../middleware/Auth';
-
+import upload from '../Utils/FileUpload';
 const router = express.Router();
 
 /**
@@ -42,7 +42,7 @@ const router = express.Router();
  *       '500':
  *         description: Error in creating user
  */
-router.post('/user', authenticateToken, UserController.createUser);
+router.post('/user', authenticateToken, upload.single('profile_pic'),  UserController.createUser);
 
 /**
  * @openapi
@@ -96,7 +96,7 @@ router.get('/user/:id', authenticateToken, UserController.getUserById);
  *       '400':
  *         description: Bad input
  */
-router.put('/user/:id', authenticateToken, UserController.updateUser);
+router.put('/user/:id', authenticateToken, upload.single('profile_pic'), UserController.updateUser);
 
 /**
  * @openapi

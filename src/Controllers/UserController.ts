@@ -48,6 +48,9 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     const hashedPassword = await bcrypt.hash(password,saltRound);
     console.log("hashepasswooo",hashedPassword);
     let user = req.body;
+    if (req.file) {
+        user.profile_pic = req.file.path;
+    }    
     user.password = hashedPassword
     try {
         const userId = await UserModel.createUser(user);
@@ -92,7 +95,10 @@ export const getUserById =  async (req: Request, res: Response): Promise<void> =
 };
   
 export const updateUser =  async (req: Request, res: Response): Promise<void> => {
-
+    let user = req.body;
+    if (req.file) {
+        user.profile_pic = req.file.path;
+    }
     const isUpdated = await UserModel.updateUser(parseInt (req.params.id), req.body);
     if(isUpdated === true) {
 
