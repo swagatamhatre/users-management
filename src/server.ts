@@ -1,16 +1,14 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application} from 'express';
 import bodyParser from 'body-parser';
-import * as userController from './userController';
+
+import dotenv from 'dotenv';
+dotenv.config();
+console.log("DATABASE ", process.env.DATABASE);
+import UserRouter from './Routes/UserRoutes';
+
 const app: Application = express();
 app.use(bodyParser.json());
-
-// MySQL Connection Configuration
-
-app.post('/user', userController.createUser);
-app.get('/users', userController.getUsers);
-app.get('/user/:id',userController.getUserById); 
-app.put('/user/:id', userController.updateUser);
-app.delete('/user/:id',userController.deleteUser);
+app.use('/', UserRouter);
 
 const PORT: number = 3000;
 app.listen(PORT, () => {
